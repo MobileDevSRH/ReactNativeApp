@@ -1,23 +1,68 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, FlatList, Image, StyleSheet, Dimensions, Text } from 'react-native';
+import * as MediaLibrary from 'expo-media-library';
+
+const { width } = Dimensions.get('window');
+const ALBUM_NAME = 'MyAppPhotos';
 
 export default function Home() {
+  const [photos, setPhotos] = useState([]);
+
+  const fetchPhotos = async () => {
+    const { status } = await MediaLibrary.requestPermissionsAsync();
+    if (status !== 'granted') return;
+
+    try {
+      const album = await MediaLibrary.getAlbumAsync(ALBUM_NAME);
+      if (!album) {
+        setPhotos([]); 
+        return;
+      }
+
+      const assets = await MediaLibrary.getAssetsAsync({
+        album: album,
+        first: 50,
+        mediaType: ['photo'],
+        sortBy: [['creationTime', false]], 
+      });
+
+      const uris = assets.assets.map(asset => asset.uri);
+      setPhotos(uris);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchPhotos();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Hello World</Text>
+      {photos.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No photos yet!</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={photos}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => <Image source={{ uri: item }} style={styles.photo} />}
+          numColumns={3}
+        />
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff'
+  container: { flex: 1, padding: 5 },
+  photo: {
+    width: width / 3 - 10,
+    height: width / 3 - 10,
+    margin: 5,
+    borderRadius: 8,
   },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold'
-  }
+  emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  emptyText: { fontSize: 16, color: '#888' },
 });

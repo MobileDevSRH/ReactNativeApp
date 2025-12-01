@@ -57,25 +57,34 @@ export default function CameraUpload() {
     }
   };
 
-  const savePicture = async () => {
-    if (!capturedImage) return;
+ const savePicture = async () => {
+  if (!capturedImage) return;
 
-    const granted = await requestMediaLibraryPermission();
-    if (!granted) {
-      Alert.alert('Permission required', 'Need permission to save photos');
-      return;
+  const granted = await requestMediaLibraryPermission();
+  if (!granted) {
+    Alert.alert('Permission required', 'Need permission to save photos');
+    return;
+  }
+
+  try {
+    const asset = await MediaLibrary.createAssetAsync(capturedImage.uri);
+
+    const ALBUM_NAME = 'MyAppPhotos';
+    let album = await MediaLibrary.getAlbumAsync(ALBUM_NAME);
+    if (!album) {
+      await MediaLibrary.createAlbumAsync(ALBUM_NAME, asset, false);
+    } else {
+      await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
     }
 
-    try {
-      const asset = await MediaLibrary.createAssetAsync(capturedImage.uri);
-      console.log('Saved photo URI:', asset.uri);
-      Alert.alert('Photo Saved', 'Photo saved successfully!\nURI: ' + asset.uri);
-      setCapturedImage(null);
-    } catch (err) {
-      console.error('Error saving photo:', err);
-      Alert.alert('Error', 'Failed to save photo');
-    }
-  };
+    console.log('Saved photo URI:', asset.uri);
+    Alert.alert('Photo Saved', 'Photo saved successfully!');
+    setCapturedImage(null);
+  } catch (err) {
+    console.error('Error saving photo:', err);
+    Alert.alert('Error', 'Failed to save photo');
+  }
+};
 
   return (
     <SafeAreaView style={styles.container}>
