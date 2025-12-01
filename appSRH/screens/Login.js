@@ -23,7 +23,7 @@ export default function Login({ navigation }) {
       if (isAuthenticated) {
         setUsername('');
         setPassword('');
-        navigation.navigate('Home');
+        navigation.replace('Main');
       } else {
         Alert.alert('Login Failed', 'Invalid username or password. Please try again.');
       }
