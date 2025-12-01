@@ -8,6 +8,7 @@ import Login from './screens/Login';
 import Home from './screens/Home';
 
 import { initDatabase } from './Database';
+import CameraUpload from './screens/CameraUpload';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,10 @@ export default function App() {
           name="Login" 
           component={Login} 
           options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="Camera" 
+          component={CameraUpload}
         />
         <Stack.Screen 
           name="Home" 
