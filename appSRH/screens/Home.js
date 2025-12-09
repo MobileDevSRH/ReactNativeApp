@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, FlatList, Image, StyleSheet, Dimensions, Text } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
+import { useFocusEffect } from '@react-navigation/native'; 
 
 const { width } = Dimensions.get('window');
 const ALBUM_NAME = 'MyAppPhotos';
@@ -8,7 +9,7 @@ const ALBUM_NAME = 'MyAppPhotos';
 export default function Home() {
   const [photos, setPhotos] = useState([]);
 
-  const fetchPhotos = async () => {
+  const fetchPhotos = useCallback(async () => {
     const { status } = await MediaLibrary.requestPermissionsAsync();
     if (status !== 'granted') return;
 
@@ -28,14 +29,17 @@ export default function Home() {
 
       const uris = assets.assets.map(asset => asset.uri);
       setPhotos(uris);
+      console.log('Photos refreshed!');
     } catch (err) {
       console.error(err);
     }
-  };
-
-  useEffect(() => {
-    fetchPhotos();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchPhotos();
+    }, [fetchPhotos])
+  );
 
   return (
     <View style={styles.container}>
