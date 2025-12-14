@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TomTom Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link
+    rel="stylesheet"
+    href="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps.css"
+  />
+  <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps-web.min.js"></script>
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { width: 100vw; height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script>
+    const TOMTOM_API_KEY = window.TOMTOM_API_KEY;
+    let map;
+    let currentMarker;
+    let firstLocationReceived = false;
+    const INITIAL_ZOOM = 16;
+    let locationQueue = [];
+
+    function updateMapLocation(latitude, longitude) {
+      const lngLat = [longitude, latitude];
+
+      if (!currentMarker) {
+        currentMarker = new tt.Marker({ color: '#007bff' })
+          .setLngLat(lngLat)
+          .addTo(map);
+      } else {
+        currentMarker.setLngLat(lngLat);
+      }
+
+      if (!firstLocationReceived) {
+        map.setCenter(lngLat);
+        map.setZoom(INITIAL_ZOOM);
+        firstLocationReceived = true;
+      }
+    }
+
+    function handleReceivedMessage(message) {
+      try {
+        const payload = JSON.parse(message);
+
+        if (payload.type === 'NEW_LOCATION') {
+          const { latitude, longitude } = payload.data;
+
+          if (map && map.loaded()) {
+            updateMapLocation(latitude, longitude);
+          } else {
+            locationQueue.push({ latitude, longitude });
+          }
+        }
+      } catch (e) {
+        console.error('Message parse error:', e);
+      }
+    }
+
+    if (TOMTOM_API_KEY) {
+      map = tt.map({
+        key: TOMTOM_API_KEY,
+        container: 'map',
+        center: [-122.4194, 37.7749],
+        zoom: 12,
+      });
+
+      map.on('load', () => {
+        while (locationQueue.length > 0) {
+          const loc = locationQueue.shift();
+          updateMapLocation(loc.latitude, loc.longitude);
+        }
+      });
+
+      function receiveMessage(event) {
+        handleReceivedMessage(event.data);
+      }
+      document.addEventListener('message', receiveMessage); 
+      window.addEventListener('message', receiveMessage);  
+    }
+  </script>
+</body>
+</html>

@@ -2,6 +2,9 @@
   "expo": {
     "name": "appSRH",
     "slug": "appSRH",
+    "extra": {
+      "TOMTOM_API_KEY": "mv20HnYOZRmaqCbMu1Iq7OC8Qi5UoHRX"
+    },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,7 +32,8 @@
         "CAMERA",
         "RECORD_AUDIO",
         "WRITE_EXTERNAL_STORAGE",
-        "READ_EXTERNAL_STORAGE"
+        "READ_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION"
       ],
       "package": "com.edwinvincent28.appSRH"
     },
@@ -37,7 +41,8 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-asset"
     ]
   }
 }
