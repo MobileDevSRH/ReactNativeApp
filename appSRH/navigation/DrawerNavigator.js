@@ -7,6 +7,7 @@ import CameraUpload from '../screens/CameraUpload';
 import Maps from '../screens/Maps';
 import TTS from '../screens/TTS';
 import AR from '../screens/AR';
+import Notifications from '../screens/Notifications';
 
 const Drawer = createDrawerNavigator();
 
@@ -35,6 +36,10 @@ function CustomDrawerContent({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate('AR')}>
         <Text style={{ fontSize: 18, paddingVertical: 10 }}>AR</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
+        <Text style={{ fontSize: 18, paddingVertical: 10 }}>Notifications</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -43,13 +48,25 @@ export default function DrawerNavigator() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-      screenOptions={{ headerShown: true }}
+      screenOptions={({ navigation }) => ({
+        headerShown: true,
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => navigation.toggleDrawer()}
+            style={{ marginLeft: 10 }}
+            testID="drawer-toggle-button"
+          >
+            <Text style={{ fontSize: 30 }}>≡</Text>
+          </TouchableOpacity>
+        ),
+      })}
     >
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="CameraUpload" component={CameraUpload} />
       <Drawer.Screen name="Maps" component={Maps} />
       <Drawer.Screen name="TTS" component={TTS} />
       <Drawer.Screen name="AR" component={AR} />
+      <Drawer.Screen name="Notifications" component={Notifications} />
     </Drawer.Navigator>
   );
 }
