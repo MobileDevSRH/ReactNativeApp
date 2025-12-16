@@ -3,7 +3,11 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 export default function Button({ title, onPress, style, textStyle }) {
   return (
-    <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.button, style]}
+      onPress={onPress}
+      accessibilityRole="button"
+    >
       <Text style={[styles.text, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
