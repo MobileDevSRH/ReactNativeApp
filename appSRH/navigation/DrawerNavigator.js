@@ -7,6 +7,7 @@ import CameraUpload from '../screens/CameraUpload';
 import Maps from '../screens/Maps';
 import TTS from '../screens/TTS';
 import AR from '../screens/AR';
+import BackgroundTask from '../screens/BackgroundTask';
 
 const Drawer = createDrawerNavigator();
 
@@ -35,6 +36,10 @@ function CustomDrawerContent({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate('AR')}>
         <Text style={{ fontSize: 18, paddingVertical: 10 }}>AR</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('BackgroundTask')}>
+        <Text style={{ fontSize: 18, paddingVertical: 10 }}>Background Tasks</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -50,6 +55,7 @@ export default function DrawerNavigator() {
       <Drawer.Screen name="Maps" component={Maps} />
       <Drawer.Screen name="TTS" component={TTS} />
       <Drawer.Screen name="AR" component={AR} />
+      <Drawer.Screen name="BackgroundTask" component={BackgroundTask} />
     </Drawer.Navigator>
   );
 }

@@ -3,7 +3,10 @@
     "name": "appSRH",
     "slug": "appSRH",
     "extra": {
-      "TOMTOM_API_KEY": "mv20HnYOZRmaqCbMu1Iq7OC8Qi5UoHRX"
+      "TOMTOM_API_KEY": "mv20HnYOZRmaqCbMu1Iq7OC8Qi5UoHRX",
+      "eas": {
+        "projectId": "00b5e803-ebc0-406e-a485-383592d4a671"
+      }
     },
     "version": "1.0.0",
     "orientation": "portrait",
@@ -42,7 +45,9 @@
     },
     "plugins": [
       "expo-sqlite",
-      "expo-asset"
+      "expo-asset",
+      "expo-background-task",
+      "expo-secure-store"
     ]
   }
 }
