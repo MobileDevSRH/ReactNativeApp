@@ -31,12 +31,7 @@
         "CAMERA",
         "RECORD_AUDIO",
         "WRITE_EXTERNAL_STORAGE",
-        "READ_EXTERNAL_STORAGE",
-        "CAMERA",
-        "RECORD_AUDIO",
-        "WRITE_EXTERNAL_STORAGE",
-        "READ_EXTERNAL_STORAGE",
-        "ACCESS_FINE_LOCATION"
+        "READ_EXTERNAL_STORAGE"
       ],
       "package": "com.edwinvincent28.appSRH"
     },

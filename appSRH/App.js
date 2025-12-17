@@ -11,6 +11,7 @@ import { initDatabase } from './Database';
 import CameraUpload from './screens/CameraUpload';
 
 import DrawerNavigator from './navigation/DrawerNavigator';
+import { LanguageProvider } from './context/LanguageContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,12 +36,14 @@ export default function App() {
   }
 
   return (
+    <LanguageProvider>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Main" component={DrawerNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
+     </LanguageProvider>
   );
 }
 
