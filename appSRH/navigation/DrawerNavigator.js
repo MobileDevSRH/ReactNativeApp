@@ -49,6 +49,7 @@ function CustomDrawerContent({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate('BackgroundTask')}>
         <Text style={{ fontSize: 18, paddingVertical: 10 }}>Background Tasks</Text>
       </TouchableOpacity>
+
     </View>
   );
 }

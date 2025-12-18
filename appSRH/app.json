@@ -39,10 +39,11 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      "@reactvision/react-viro",
       "expo-sqlite",
       "expo-asset",
-      "expo-background-task",
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-localization"
     ]
   }
 }
